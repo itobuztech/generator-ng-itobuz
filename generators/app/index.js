@@ -86,18 +86,38 @@ module.exports = class extends Generator {
       startCommand = startCommand + ' --' + item
     });
     // console.log(startCommand);
-    
+
     this.installDependencies(
       {
         npm: true,
         bower: false,
         skipMessage: true,
         callback: function () {
+          // remove yo generator required npm deps
           shell.exec('rm -rf  package.json && rm -rf package-lock.json');
           // shell.exec('chmod 755 create.sh');
           // shell.exec('./create.sh');
           // shell.exec('rm -f create.sh');
+
+          // create angular project with configs
           shell.exec('ng new ' + this.props.projectname + startCommand);
+
+          // copy node modules generator test purpose
+          shell.exec('cp -R aa2/node_modules ' + this.props.projectname + '/node_modules')
+
+
+          // create home module and home component
+          shell.exec('git clone https://github.com/itobuztech/ng-home.git');
+          shell.exec('cp -R ng-home/home ./'+ this.props.projectname +'/src/app');
+
+          // App routing and app.component.html update
+          shell.exec('cp ng-home/app/app.component.html ./aa/src/app/app.component.html')
+          shell.exec('cp ng-home/app/app-routing.module.ts ./aa/src/app/app-routing.module.ts')
+
+          // remove template
+          shell.exec('rm -rf ng-home');
+
+
         }.bind(this)
       }
     );
