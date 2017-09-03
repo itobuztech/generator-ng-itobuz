@@ -28,11 +28,11 @@ module.exports = class extends Generator {
       }, {
         name: 'skip git',
         value: 'skip-git',
-        checked: true
+        checked: false
       }, {
         name: 'skip install',
         value: 'skip-install',
-        checked: true
+        checked: false
       },
       {
         name: 'skip tests',
@@ -103,7 +103,7 @@ module.exports = class extends Generator {
           shell.exec('ng new ' + this.props.projectname + startCommand);
 
           // copy node modules generator test purpose
-          shell.exec('cp -R aa2/node_modules ' + this.props.projectname + '/node_modules')
+          // shell.exec('cp -R aa2/node_modules ' + this.props.projectname + '/node_modules')
 
 
           // create home module and home component

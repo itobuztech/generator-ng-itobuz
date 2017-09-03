@@ -12,12 +12,12 @@ Then generate your new project:
 ```bash
 yo ng-itobuz
 ```
-## Next RoadMap
-- Home route
-- Http Interceptor 
+
 
 ## Features
 - Pick options from list for new project generate. Available options:
     - style: scss
     - routing
-    - prefix: custom prefix 
+    - prefix: custom prefix
+- home route generate
+- interceptor generate 
