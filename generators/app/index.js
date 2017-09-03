@@ -112,10 +112,21 @@ module.exports = class extends Generator {
 
           // App routing and app.component.html update
           shell.exec('cp ng-home/app/app.component.html ./aa/src/app/app.component.html')
-          shell.exec('cp ng-home/app/app-routing.module.ts ./aa/src/app/app-routing.module.ts')
+          shell.exec('cp ng-home/app/app-routing.module.ts ./'+ this.props.projectname +'/src/app/app-routing.module.ts')
+
+          // interceptor
+          shell.exec('cp ng-home/app/http.interceptor.ts ./'+ this.props.projectname +'/src/app/http.interceptor.ts')
+          shell.exec('cp ng-home/app/app.module.ts ./'+ this.props.projectname +'/src/app/app.module.ts')
+
+          // env
+          shell.exec('cp -R ng-home/environments ./'+ this.props.projectname +'/src')
+
 
           // remove template
           shell.exec('rm -rf ng-home');
+
+          // run ng serve
+          shell.exec('cd '+ this.props.projectname +' && ng serve');
 
 
         }.bind(this)
