@@ -1,0 +1,57 @@
+{
+  "name": "generator-ng-itobuz",
+  "version": "0.0.1",
+  "description": "Create angular project with new way and maintain same structure for all projects",
+  "homepage": "http://itobuz.com",
+  "author": {
+    "name": "ItobuzTech",
+    "email": "developer.prosenjit@gmail.com",
+    "url": "http://developer-prosenjit.github.com"
+  },
+  "files": [
+    "generators"
+  ],
+  "main": "generators/index.js",
+  "keywords": [
+    "ng2-itobuz",
+    "angular-2",
+    "itobuz",
+    "itobuztech",
+    "generator-ng-itobuz ",
+    "yeoman-generator"
+  ],
+  "devDependencies": {
+    "yeoman-test": "^1.6.0",
+    "yeoman-assert": "^3.0.0",
+    "coveralls": "^2.13.1",
+    "nsp": "^2.6.3",
+    "eslint": "^4.1.0",
+    "eslint-config-xo-space": "^0.16.0",
+    "jest": "^19.0.2",
+    "jest-cli": "^20.0.0"
+  },
+  "dependencies": {
+    "chalk": "^1.1.3",
+    "shell": "^0.3.2",
+    "shelljs": "^0.7.8",
+    "yeoman-generator": "^1.0.0",
+    "yosay": "^2.0.0"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "scripts": {
+    "prepublish": "nsp check",
+    "pretest": "eslint . --fix",
+    "test": "jest"
+  },
+  "eslintConfig": {
+    "extends": "xo-space",
+    "env": {
+      "jest": true,
+      "node": true
+    }
+  },
+  "repository": "itobuztech/generator-ng-itobuz",
+  "license": "Apache-2.0"
+}

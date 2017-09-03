@@ -1,0 +1,9 @@
+{
+  "generator-node": {
+    "promptValues": {
+      "authorName": "Prosenjit Manna",
+      "authorEmail": "developer.prosenjit@gmail.com",
+      "authorUrl": "http://developer-prosenjit.github.com"
+    }
+  }
+}
