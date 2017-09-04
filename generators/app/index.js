@@ -2,9 +2,17 @@
 const Generator = require('yeoman-generator');
 const chalk = require('chalk');
 var shell = require('shelljs');
+const updateNotifier = require('update-notifier');
+const pkg = require('../../package.json');
+const notifier = updateNotifier({
+  pkg,
+  updateCheckInterval: 1000
+});
 
 module.exports = class extends Generator {
   prompting() {
+    notifier.notify();
+    
     // Have Yeoman greet the user.
     var logo = '\n    ;;;;;;;;;;;;;;;;;;;;;;;;;;;\n    ;;;;;;;;;;;;;;;;;;;;;;;;;;;\n    ;;;;;;;;;;;;;;;;;;;;;;;;;;;\n    ;;;;;,,,,,,,,,,,,,,,,,,;;;;\n    ;;;;;                  ;;;;\n    ;;;;;                  ;;;;\n    ;;;;;   ```````````    ;;;;\n    ;;;;;   ;;...;;;;;    ;;;;;\n    ;;;;;   ;;   ;;;;`   ,;;;;;\n    ;;;;;   ;;   ;;;:    ;;;;;;\n    ;;;;;   ;;   ;;;    ;;;;;;;\n    ;;;;;   ;;   ;;    ;;;;;;;;\n    ;;;;;   ;;   ;`   :;;;;;;;;\n    ;;;;;   ;;   :    ;;;;;;;;;\n    ;;;;;   ;;   ;,    ;;;;;;;;\n    ;;;;;   ;;   ;;:    ;;;;;;;\n    ;;;;;   ;;   ;;;;    ;;;;;;\n    ;;;;;   ;;```;;;;;    ;;;;;\n    ;;;;;   ,,,,,,,,,,,    ;;;;\n    ;;;;;                  ;;;;\n    ;;;;;                  ;;;;\n    ;;;;;::::::::::::::::::;;;;\n    ;;;;;;;;;;;;;;;;;;;;;;;;;;;\n    ;;;;;;;;;;;;;;;;;;;;;;;;;;;\n    ;;;;;;;;;;;;;;;;;;;;;;;;;;;\n    ;;;;;;;;;;;;;;;;;;;;;;;;;;;';
     this.log(logo);
@@ -54,7 +62,19 @@ module.exports = class extends Generator {
       value: 'prefix',
       checked: true
     }]
-    }];
+    },
+  {
+    name:'includeTemplate',
+    message: 'Include predefined template / module / service',
+    type: 'checkbox',
+    choices: [
+      {
+        name: 'home module / router module / interceptor',
+        value: 'home',
+        checked: true
+      }
+    ]
+  }];
 
     return this.prompt(prompts).then(props => {
       // To access props later use this.props.someAnswer;
@@ -104,9 +124,9 @@ module.exports = class extends Generator {
 
           // copy node modules generator test purpose
           // shell.exec('cp -R aa2/node_modules ' + this.props.projectname + '/node_modules')
-
-
+          // console.log(this.props.includeTemplate);
           // create home module and home component
+          if (this.props.includeTemplate[0]=== 'home') {
           shell.exec('git clone https://github.com/itobuztech/ng-home.git');
           shell.exec('cp -R ng-home/home ./'+ this.props.projectname +'/src/app');
 
@@ -120,10 +140,10 @@ module.exports = class extends Generator {
 
           // env
           shell.exec('cp -R ng-home/environments ./'+ this.props.projectname +'/src')
-
-
           // remove template
           shell.exec('rm -rf ng-home');
+          }
+         
 
           // run ng serve
           shell.exec('cd '+ this.props.projectname +' && ng serve');
