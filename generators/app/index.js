@@ -1,6 +1,7 @@
 'use strict';
 const Generator = require('yeoman-generator');
 const chalk = require('chalk');
+const log = console.log;
 var shell = require('shelljs');
 const updateNotifier = require('update-notifier');
 const pkg = require('../../package.json');
@@ -12,7 +13,7 @@ const notifier = updateNotifier({
 module.exports = class extends Generator {
   prompting() {
     notifier.notify();
-    
+
     // Have Yeoman greet the user.
     var logo = '\n    ;;;;;;;;;;;;;;;;;;;;;;;;;;;\n    ;;;;;;;;;;;;;;;;;;;;;;;;;;;\n    ;;;;;;;;;;;;;;;;;;;;;;;;;;;\n    ;;;;;,,,,,,,,,,,,,,,,,,;;;;\n    ;;;;;                  ;;;;\n    ;;;;;                  ;;;;\n    ;;;;;   ```````````    ;;;;\n    ;;;;;   ;;...;;;;;    ;;;;;\n    ;;;;;   ;;   ;;;;`   ,;;;;;\n    ;;;;;   ;;   ;;;:    ;;;;;;\n    ;;;;;   ;;   ;;;    ;;;;;;;\n    ;;;;;   ;;   ;;    ;;;;;;;;\n    ;;;;;   ;;   ;`   :;;;;;;;;\n    ;;;;;   ;;   :    ;;;;;;;;;\n    ;;;;;   ;;   ;,    ;;;;;;;;\n    ;;;;;   ;;   ;;:    ;;;;;;;\n    ;;;;;   ;;   ;;;;    ;;;;;;\n    ;;;;;   ;;```;;;;;    ;;;;;\n    ;;;;;   ,,,,,,,,,,,    ;;;;\n    ;;;;;                  ;;;;\n    ;;;;;                  ;;;;\n    ;;;;;::::::::::::::::::;;;;\n    ;;;;;;;;;;;;;;;;;;;;;;;;;;;\n    ;;;;;;;;;;;;;;;;;;;;;;;;;;;\n    ;;;;;;;;;;;;;;;;;;;;;;;;;;;\n    ;;;;;;;;;;;;;;;;;;;;;;;;;;;';
     this.log(logo);
@@ -57,24 +58,24 @@ module.exports = class extends Generator {
         value: 'routing',
         checked: true
       },
-    {
-      name: 'prefix',
-      value: 'prefix',
-      checked: true
-    }]
-    },
-  {
-    name:'includeTemplate',
-    message: 'Include predefined template / module / service',
-    type: 'checkbox',
-    choices: [
       {
-        name: 'home module / router module / interceptor',
-        value: 'home',
+        name: 'prefix',
+        value: 'prefix',
         checked: true
-      }
-    ]
-  }];
+      }]
+      },
+      {
+        name: 'includeTemplate',
+        message: 'Include predefined template / module / service',
+        type: 'checkbox',
+        choices: [
+          {
+            name: 'home module / router module / interceptor',
+            value: 'home',
+            checked: true
+          }
+        ]
+      }];
 
     return this.prompt(prompts).then(props => {
       // To access props later use this.props.someAnswer;
@@ -105,7 +106,7 @@ module.exports = class extends Generator {
       };
       startCommand = startCommand + ' --' + item
     });
-    // console.log(startCommand);
+    log(chalk.blue(startCommand));
 
     this.installDependencies(
       {
@@ -113,8 +114,8 @@ module.exports = class extends Generator {
         bower: false,
         skipMessage: true,
         callback: function () {
-          // remove yo generator required npm deps
-          shell.exec('rm -rf  package.json && rm -rf package-lock.json');
+          // Remove yo generator required npm deps
+          shell.exec('rm -rf  package.json && rm -rf package-lock.json && rm -rf node_modules');
           // shell.exec('chmod 755 create.sh');
           // shell.exec('./create.sh');
           // shell.exec('rm -f create.sh');
@@ -122,33 +123,30 @@ module.exports = class extends Generator {
           // create angular project with configs
           shell.exec('ng new ' + this.props.projectname + startCommand);
 
-          // copy node modules generator test purpose
+          // Copy node modules generator test purpose
           // shell.exec('cp -R aa2/node_modules ' + this.props.projectname + '/node_modules')
           // console.log(this.props.includeTemplate);
           // create home module and home component
-          if (this.props.includeTemplate[0]=== 'home') {
-          shell.exec('git clone https://github.com/itobuztech/ng-home.git');
-          shell.exec('cp -R ng-home/home ./'+ this.props.projectname +'/src/app');
+          if (this.props.includeTemplate[0] === 'home') {
+            shell.exec('git clone https://github.com/itobuztech/ng-home.git');
+            shell.exec('cp -R ng-home/home ./' + this.props.projectname + '/src/app');
 
-          // App routing and app.component.html update
-          shell.exec('cp ng-home/app/app.component.html ./aa/src/app/app.component.html')
-          shell.exec('cp ng-home/app/app-routing.module.ts ./'+ this.props.projectname +'/src/app/app-routing.module.ts')
+            // App routing and app.component.html update
+            shell.exec('cp ng-home/app/app.component.html ./aa/src/app/app.component.html');
+            shell.exec('cp ng-home/app/app-routing.module.ts ./' + this.props.projectname + '/src/app/app-routing.module.ts');
 
-          // interceptor
-          shell.exec('cp ng-home/app/http.interceptor.ts ./'+ this.props.projectname +'/src/app/http.interceptor.ts')
-          shell.exec('cp ng-home/app/app.module.ts ./'+ this.props.projectname +'/src/app/app.module.ts')
+            // Interceptor
+            shell.exec('cp ng-home/app/http.interceptor.ts ./' + this.props.projectname + '/src/app/http.interceptor.ts');
+            shell.exec('cp ng-home/app/app.module.ts ./' + this.props.projectname + '/src/app/app.module.ts');
 
-          // env
-          shell.exec('cp -R ng-home/environments ./'+ this.props.projectname +'/src')
-          // remove template
-          shell.exec('rm -rf ng-home');
+            // ENV
+            shell.exec('cp -R ng-home/environments ./' + this.props.projectname + '/src');
+            // Remove template
+            shell.exec('rm -rf ng-home');
           }
-         
 
-          // run ng serve
-          shell.exec('cd '+ this.props.projectname +' && ng serve');
-
-
+          // Run NG serve
+          shell.exec('cd ' + this.props.projectname + ' && ng serve');
         }.bind(this)
       }
     );
