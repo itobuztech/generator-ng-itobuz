@@ -126,27 +126,28 @@ module.exports = class extends Generator {
           // Copy node modules generator test purpose
           // shell.exec('cp -R aa2/node_modules ' + this.props.projectname + '/node_modules')
           // console.log(this.props.includeTemplate);
+
           // create home module and home component
           if (this.props.includeTemplate[0] === 'home') {
             shell.exec('git clone https://github.com/itobuztech/ng-home.git');
             shell.exec('cp -R ng-home/home ./' + this.props.projectname + '/src/app');
 
-            // App routing and app.component.html update
+            // // App routing and app.component.html update
             shell.exec('cp ng-home/app/app.component.html ./aa/src/app/app.component.html');
             shell.exec('cp ng-home/app/app-routing.module.ts ./' + this.props.projectname + '/src/app/app-routing.module.ts');
 
-            // Interceptor
+            // // Interceptor
             shell.exec('cp ng-home/app/http.interceptor.ts ./' + this.props.projectname + '/src/app/http.interceptor.ts');
             shell.exec('cp ng-home/app/app.module.ts ./' + this.props.projectname + '/src/app/app.module.ts');
 
-            // ENV
+            // // ENV
             shell.exec('cp -R ng-home/environments ./' + this.props.projectname + '/src');
-            // Remove template
+            // // Remove template
             shell.exec('rm -rf ng-home');
           }
 
           // Run NG serve
-          shell.exec('cd ' + this.props.projectname + ' && ng serve');
+          log(chalk.blue('Now run : `cd ' + this.props.projectname + ' && ng serve`'));
         }.bind(this)
       }
     );
