@@ -133,7 +133,7 @@ module.exports = class extends Generator {
             shell.exec('cp -R ng-home/home ./' + this.props.projectname + '/src/app');
 
             // // App routing and app.component.html update
-            shell.exec('cp ng-home/app/app.component.html ./aa/src/app/app.component.html');
+            shell.exec('cp ng-home/app/app.component.html ./' + this.props.projectname + '/src/app/app.component.html');
             shell.exec('cp ng-home/app/app-routing.module.ts ./' + this.props.projectname + '/src/app/app-routing.module.ts');
 
             // // Interceptor
