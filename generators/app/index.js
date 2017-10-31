@@ -4,6 +4,7 @@ const chalk = require('chalk');
 const log = console.log;
 var shell = require('shelljs');
 const updateNotifier = require('update-notifier');
+const replace = require('replace');
 const pkg = require('../../package.json');
 const notifier = updateNotifier({
   pkg,
@@ -63,19 +64,19 @@ module.exports = class extends Generator {
         value: 'prefix',
         checked: true
       }]
-      },
-      {
-        name: 'includeTemplate',
-        message: 'Include predefined template / module / service',
-        type: 'checkbox',
-        choices: [
-          {
-            name: 'home module / router module / interceptor',
-            value: 'home',
-            checked: true
-          }
-        ]
-      }];
+    },
+    {
+      name: 'includeTemplate',
+      message: 'Include predefined template / module / service',
+      type: 'checkbox',
+      choices: [
+        {
+          name: 'home module / router module / interceptor',
+          value: 'home',
+          checked: true
+        }
+      ]
+    }];
 
     return this.prompt(prompts).then(props => {
       // To access props later use this.props.someAnswer;
@@ -94,7 +95,7 @@ module.exports = class extends Generator {
     // console.log(this.props);
     var startCommand = ' ';
     this.props.newoptions.map(item => {
-      switch(item) {
+      switch (item) {
         case 'style':
           item = 'style="scss"';
           break;
@@ -102,9 +103,9 @@ module.exports = class extends Generator {
           item = 'prefix=' + this.props.projectname.toLowerCase();
           break;
         default:
-          item = item + '="true"'
-      };
-      startCommand = startCommand + ' --' + item
+          item = item + '="true"';
+      }
+      startCommand = startCommand + ' --' + item;
     });
     log(chalk.blue(startCommand));
 
@@ -144,6 +145,13 @@ module.exports = class extends Generator {
             shell.exec('cp -R ng-home/environments ./' + this.props.projectname + '/src');
             // // Remove template
             shell.exec('rm -rf ng-home');
+            replace({
+              regex: `"component": {}`,
+              replacement: `"component": { "spec": false, "changeDetection": "OnPush" }`,
+              paths: [this.props.projectname + '/.angular-cli.json'],
+              recursive: true,
+              silent: true
+            });
           }
 
           // Run NG serve

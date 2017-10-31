@@ -1,6 +1,6 @@
 {
   "name": "generator-ng-itobuz",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Create angular project with new way and maintain same structure for all projects",
   "homepage": "http://itobuz.com",
   "author": {
@@ -32,11 +32,12 @@
   },
   "dependencies": {
     "chalk": "^1.1.3",
+    "replace": "^0.3.0",
     "shell": "^0.3.2",
     "shelljs": "^0.7.8",
+    "update-notifier": "^2.2.0",
     "yeoman-generator": "^1.0.0",
-    "yosay": "^2.0.0",
-    "update-notifier": "^2.2.0"
+    "yosay": "^2.0.0"
   },
   "jest": {
     "testEnvironment": "node"
