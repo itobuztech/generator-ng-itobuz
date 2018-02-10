@@ -67,12 +67,17 @@ module.exports = class extends Generator {
     },
     {
       name: 'includeTemplate',
-      message: 'Include predefined template / module / service',
+      message: 'Other Features that need to be include',
       type: 'checkbox',
       choices: [
         {
           name: 'home module / router module / interceptor',
           value: 'home',
+          checked: true
+        },
+        {
+          name: 'jest setup',
+          value: 'jest',
           checked: true
         }
       ]
@@ -128,9 +133,13 @@ module.exports = class extends Generator {
           // shell.exec('cp -R aa2/node_modules ' + this.props.projectname + '/node_modules')
           // console.log(this.props.includeTemplate);
 
-          // create home module and home component
-          if (this.props.includeTemplate[0] === 'home') {
+          if (this.props.includeTemplate.indexOf('home') !== -1 || this.props.includeTemplate.indexOf('jest') !== -1) {
             shell.exec('git clone https://github.com/itobuztech/ng-home.git');
+          }
+
+          // Create home module and home component
+          if (this.props.includeTemplate.indexOf('home') !== -1) {
+            
             shell.exec('cp -R ng-home/home ./' + this.props.projectname + '/src/app');
 
             // // App routing and app.component.html update
@@ -143,8 +152,17 @@ module.exports = class extends Generator {
 
             // // ENV
             shell.exec('cp -R ng-home/environments ./' + this.props.projectname + '/src');
-            // // Remove template
-            shell.exec('rm -rf ng-home');
+
+            // Add jest setup
+
+            shell.exec('cp -R ng-home/gest_setup/__tests__ ./' + this.props.projectname);
+            shell.exec('cp -R ng-home/gest_setup/jest ./' + this.props.projectname);
+            shell.exec('cp  ng-home/gest_setup/jest.default.config.js ./' + this.props.projectname);
+            shell.exec('cp  ng-home/gest_setup/jest.head.config.js ./' + this.props.projectname);
+            shell.exec('cd ' + this.props.projectname + '&& yarn add --dev puppeteer');
+            shell.exec('pwd');
+            shell.exec('cd ' + this.props.projectname + '&& yarn add --dev jest');
+
             replace({
               regex: `"component": {}`,
               replacement: `"component": { "spec": false, "changeDetection": "OnPush" }`,
@@ -152,10 +170,28 @@ module.exports = class extends Generator {
               recursive: true,
               silent: true
             });
+
+            // Jest tesk added in package.json
+            replace({
+              regex: `"test": "ng test",`,
+              replacement: `
+              "test": "ng test",
+              "test:jest": "jest --runInBand --config './jest.default.config.js'",
+              "test:jest:head": "jest --runInBand --config './jest.head.config.js'",
+              `,
+              paths: [this.props.projectname + '/package.json'],
+              recursive: true,
+              silent: true
+            });
+          }
+
+          if (this.props.includeTemplate.indexOf('home') !== -1 || this.props.includeTemplate.indexOf('jest') !== -1) {
+            // // Remove template
+            shell.exec('rm -rf ng-home');
           }
 
           // Run NG serve
-          log(chalk.blue('Now run : `cd ' + this.props.projectname + ' && ng serve`'));
+          log(chalk.blue('Now run : `cd ' + this.props.projectname + ' && npm start`'));
         }.bind(this)
       }
     );
