@@ -37,7 +37,7 @@
     "shell": "^0.3.2",
     "shelljs": "^0.7.8",
     "update-notifier": "^2.2.0",
-    "yeoman-generator": "1.0.0",
+    "yeoman-generator": "2.0.5",
     "yosay": "^2.0.0"
   },
   "jest": {
