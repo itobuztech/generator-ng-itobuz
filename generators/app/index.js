@@ -178,14 +178,17 @@ module.exports = class extends Generator {
               });
             }
 
-            replace({
-              regex: this.props.newoptions.indexOf('skip-tests') !== -1 ? `"component": {`:  `"component": {}`,
-              replacement: this.props.newoptions.indexOf('skip-tests') !== -1 ? `"component": { 
-                "changeDetection": "OnPush",`: `"component": { "spec": false, "changeDetection": "OnPush" }`,
-                paths: [this.props.projectname + '/.angular-cli.json'],
-                recursive: true,
-                silent: true
-              });
+            // With angular 6 angular config renamed
+            //Quick fix commenting out
+
+            // replace({
+            //   regex: this.props.newoptions.indexOf('skip-tests') !== -1 ? `"component": {`:  `"component": {}`,
+            //   replacement: this.props.newoptions.indexOf('skip-tests') !== -1 ? `"component": { 
+            //     "changeDetection": "OnPush",`: `"component": { "spec": false, "changeDetection": "OnPush" }`,
+            //     paths: [this.props.projectname + '/.angular-cli.json'],
+            //     recursive: true,
+            //     silent: true
+            //   });
             
             if (this.props.includeTemplate.indexOf('home') !== -1 || this.props.includeTemplate.indexOf('jest') !== -1) {
               // // Remove template

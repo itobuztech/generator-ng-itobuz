@@ -1,6 +1,12 @@
+## Why this again this generator
+Angular cli have lot of predifined options. Still every time we have expence lot of time only for setup! We follow some common setup structure and have some new dev dependecies.
+
+We decide to make new generator that minimize project setup time.
+
 ## Installation
 
-### Suported up to angular 5
+### Suported angular version
+This app supported upto angular 6. It's not supported old angular version.
 
 First, install [Yeoman](http://yeoman.io) and generator-ng-itobuz using [npm](https://www.npmjs.com/) (we assume you have pre-installed [node.js](https://nodejs.org/)).
 
