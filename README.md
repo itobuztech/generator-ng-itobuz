@@ -1,5 +1,7 @@
 ## Installation
 
+### Suported up to angular 5
+
 First, install [Yeoman](http://yeoman.io) and generator-ng-itobuz using [npm](https://www.npmjs.com/) (we assume you have pre-installed [node.js](https://nodejs.org/)).
 
 ```bash
