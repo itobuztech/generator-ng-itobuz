@@ -1,4 +1,4 @@
-## Why this again this generator
+## Why  again this generator
 Angular cli have lot of predifined options. Still every time we have expence lot of time only for setup! We follow some common setup structure and have some new dev dependecies.
 
 We decide to make new generator that minimize project setup time.
