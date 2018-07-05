@@ -159,12 +159,13 @@ module.exports = class extends Generator {
           shell.exec('cp -R ng-home/gest_setup/__tests__ ./' + this.props.projectname);
           shell.exec('cp -R ng-home/gest_setup/jest ./' + this.props.projectname);
           shell.exec('cp  ng-home/gest_setup/jest.config.js ./' + this.props.projectname);
+          shell.exec('cp  ng-home/gest_setup/env.sample ./' + this.props.projectname + '/.env');
           shell.exec('cd ' + this.props.projectname + '&& yarn add --dev puppeteer');
           shell.exec('cd ' + this.props.projectname + '&& yarn add --dev jest');
           shell.exec('cd ' + this.props.projectname + '&& yarn add --dev jest-image-snapshot');
           shell.exec('cd ' + this.props.projectname + '&& yarn add --dev dotenv');
 
-          // Jest tesk added in package.json
+          // Jest task added in package.json
           replace({
             regex: `"test": "ng test",`,
             replacement: `
