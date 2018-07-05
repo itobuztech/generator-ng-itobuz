@@ -47,7 +47,7 @@ module.exports = class extends Generator {
           {
             name: 'skip tests',
             value: 'skip-tests',
-            checked: true
+            checked: false
           },
           {
             name: 'style: scss',
@@ -135,9 +135,9 @@ module.exports = class extends Generator {
 
         if (this.props.includeTemplate.indexOf('home') !== -1 || this.props.includeTemplate.indexOf('jest') !== -1) {
           shell.exec('git clone https://github.com/itobuztech/ng-home.git');
-          shell.exec('cd ng-home && git checkout -b dev origin/dev');
-          shell.exec('pwd');
-          shell.exec('cd ..');
+          // shell.exec('cd ng-home && git checkout -b dev origin/dev');
+          // shell.exec('pwd');
+          // shell.exec('cd ..');
         }
 
         // Create home module and home component
@@ -166,8 +166,7 @@ module.exports = class extends Generator {
           shell.exec('cd ' + this.props.projectname + '&& yarn add --dev jest');
           shell.exec('cd ' + this.props.projectname + '&& yarn add --dev jest-image-snapshot');
           shell.exec('cd ' + this.props.projectname + '&& yarn add --dev dotenv');
-          shell.exec('cd ' + this.props.projectname + '&& yarn add --dev djest-preset-angularotenv @types/jest');
-
+          shell.exec('cd ' + this.props.projectname + '&& yarn add --dev jest-preset-angular  @types/jest');
 
           // Jest task added in package.json
           replace({
@@ -188,7 +187,7 @@ module.exports = class extends Generator {
                 "jest": {
                   "preset": "jest-preset-angular",
                   "setupTestFrameworkScriptFile": "<rootDir>/jest/browser.js"
-                }
+                },
                 `,
             paths: [this.props.projectname + '/package.json'],
             recursive: true,
