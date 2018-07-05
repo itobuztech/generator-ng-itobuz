@@ -20,68 +20,69 @@ module.exports = class extends Generator {
     log(chalk.red(logo));
 
     const prompts = [{
-      type: 'input',
-      name: 'projectname',
-      message: 'Enter your project name',
-      validate: function (str) {
-        return str.length > 0;
+        type: 'input',
+        name: 'projectname',
+        message: 'Enter your project name',
+        validate: function (str) {
+          return str.length > 0;
+        }
+      },
+      {
+        type: 'checkbox',
+        name: 'newoptions',
+        message: 'Angular Project create options',
+        choices: [{
+            name: 'skip commit',
+            value: 'skip-commit',
+            checked: true
+          }, {
+            name: 'skip git',
+            value: 'skip-git',
+            checked: false
+          }, {
+            name: 'skip install',
+            value: 'skip-install',
+            checked: false
+          },
+          {
+            name: 'skip tests',
+            value: 'skip-tests',
+            checked: true
+          },
+          {
+            name: 'style: scss',
+            value: 'style',
+            checked: true
+          },
+          {
+            name: 'routing',
+            value: 'routing',
+            checked: true
+          },
+          {
+            name: 'prefix',
+            value: 'prefix',
+            checked: true
+          }
+        ]
+      },
+      {
+        name: 'includeTemplate',
+        message: 'Other Features that need to be include',
+        type: 'checkbox',
+        choices: [{
+            name: 'home module / router module / interceptor',
+            value: 'home',
+            checked: true
+          },
+          {
+            name: 'jest setup: Testing environment with JEST',
+            value: 'jest',
+            checked: true
+          }
+        ]
       }
-    },
-    {
-      type: 'checkbox',
-      name: 'newoptions',
-      message: 'Angular Project create options',
-      choices: [{
-        name: 'skip commit',
-        value: 'skip-commit',
-        checked: true
-      }, {
-        name: 'skip git',
-        value: 'skip-git',
-        checked: false
-      }, {
-        name: 'skip install',
-        value: 'skip-install',
-        checked: false
-      },
-      {
-        name: 'skip tests',
-        value: 'skip-tests',
-        checked: true
-      },
-      {
-        name: 'style: scss',
-        value: 'style',
-        checked: true
-      },
-      {
-        name: 'routing',
-        value: 'routing',
-        checked: true
-      },
-      {
-        name: 'prefix',
-        value: 'prefix',
-        checked: true
-      }
-      ]
-    },
-    {
-      name: 'includeTemplate',
-      message: 'Other Features that need to be include',
-      type: 'checkbox',
-      choices: [{
-        name: 'home module / router module / interceptor',
-        value: 'home',
-        checked: true
-      },
-      {
-        name: 'jest setup: Testing environment with JEST',
-        value: 'jest',
-        checked: true
-      }
-      ]
-    }];
+    ];
 
     return this.prompt(prompts).then(props => {
       // To access props later use this.props.someAnswer;
@@ -134,7 +135,9 @@ module.exports = class extends Generator {
 
         if (this.props.includeTemplate.indexOf('home') !== -1 || this.props.includeTemplate.indexOf('jest') !== -1) {
           shell.exec('git clone https://github.com/itobuztech/ng-home.git');
-          shell.exec('git checkout -b dev origin/dev');
+          shell.exec('cd ng-home && git checkout -b dev origin/dev');
+          shell.exec('pwd');
+          shell.exec('cd ..');
         }
 
         // Create home module and home component
@@ -158,12 +161,13 @@ module.exports = class extends Generator {
         if (this.props.includeTemplate.indexOf('jest') !== -1) {
           shell.exec('cp -R ng-home/gest_setup/__tests__ ./' + this.props.projectname);
           shell.exec('cp -R ng-home/gest_setup/jest ./' + this.props.projectname);
-          shell.exec('cp  ng-home/gest_setup/jest.config.js ./' + this.props.projectname);
           shell.exec('cp  ng-home/gest_setup/env.sample ./' + this.props.projectname + '/.env');
           shell.exec('cd ' + this.props.projectname + '&& yarn add --dev puppeteer');
           shell.exec('cd ' + this.props.projectname + '&& yarn add --dev jest');
           shell.exec('cd ' + this.props.projectname + '&& yarn add --dev jest-image-snapshot');
           shell.exec('cd ' + this.props.projectname + '&& yarn add --dev dotenv');
+          shell.exec('cd ' + this.props.projectname + '&& yarn add --dev djest-preset-angularotenv @types/jest');
+
 
           // Jest task added in package.json
           replace({
@@ -171,6 +175,20 @@ module.exports = class extends Generator {
             replacement: `
                 "test": "ng test",
                 "test:jest": "jest",
+                `,
+            paths: [this.props.projectname + '/package.json'],
+            recursive: true,
+            silent: true
+          });
+
+          replace({
+            regex: `"version": "0.0.0",`,
+            replacement: `
+                "version": "0.0.0",
+                "jest": {
+                  "preset": "jest-preset-angular",
+                  "setupTestFrameworkScriptFile": "<rootDir>/jest/browser.js"
+                }
                 `,
             paths: [this.props.projectname + '/package.json'],
             recursive: true,
