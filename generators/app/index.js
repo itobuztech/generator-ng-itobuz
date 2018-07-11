@@ -171,10 +171,8 @@ module.exports = class extends Generator {
           // Jest task added in package.json
           replace({
             regex: `"test": "ng test",`,
-            replacement: `
-                "test": "ng test",
-                "test:jest": "jest",
-                `,
+            replacement: `"test": "ng test",
+    "test:jest": "jest --runInBand --watch",`,
             paths: [this.props.projectname + '/package.json'],
             recursive: true,
             silent: true
@@ -182,13 +180,11 @@ module.exports = class extends Generator {
 
           replace({
             regex: `"version": "0.0.0",`,
-            replacement: `
-                "version": "0.0.0",
-                "jest": {
-                  "preset": "jest-preset-angular",
-                  "setupTestFrameworkScriptFile": "<rootDir>/jest/browser.js"
-                },
-                `,
+            replacement: `"version": "0.0.0",
+    "jest": {
+    "preset": "jest-preset-angular",
+    "setupTestFrameworkScriptFile": "<rootDir>/jest/browser.js"
+    },`,
             paths: [this.props.projectname + '/package.json'],
             recursive: true,
             silent: true
